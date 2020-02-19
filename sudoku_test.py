@@ -18,8 +18,8 @@ class IsValidTest(unittest.TestCase):
         self.assertFalse(is_valid(num = 5, pos = (1, 6), board = self.board))
 
     def test_box_conflict(self):
-        self.board[1][1] = 3
-        self.assertFalse(is_valid(num = 3, pos = (2, 2), board = self.board))
+        self.board[8][8] = 3
+        self.assertFalse(is_valid(num = 3, pos = (6, 6), board = self.board))
 
     def test_num_in_another_box(self):
         self.board[0][0] = 1

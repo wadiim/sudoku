@@ -13,7 +13,7 @@ def is_valid(num, pos, board):
     # Find top-left corner of the box containing pos
     dx, dy = x // 3, y // 3
     # Check box containing pos
-    for i in range(dx, dx + 3):
-        for j in range(dy, dy + 3):
+    for i in range(3*dx, 3*dx + 3):
+        for j in range(3*dy, 3*dy + 3):
             if board[i][j] == num: return False
     return True
