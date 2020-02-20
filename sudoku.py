@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys, random
+import sys, random, argparse
 
 if sys.version[0] == '2': input = raw_input
 
@@ -61,3 +61,35 @@ def generate_sudoku(gaps = 22):
 def print_board(board):
     print('\n'.join([''.join([str(i) if i else ' ' for i in row])
         for row in board]))
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('-s', '--solve', action = 'store_true',
+        help = 'solve sudoku')
+    group.add_argument('-g', '--generate', type = int, dest = 'GAPS',
+        help = 'generate sudoku with GAPS gaps',
+        default = random.randint(32, 64))
+    return parser.parse_args()
+
+def main():
+    args = parse_args()
+    if args.solve:
+        data = ''
+        try:
+            while True: data += input()
+        except EOFError:
+            if len(data) != 81:
+                sys.stderr.write('Incorrect input')
+                sys.exit(2)
+            board = [[int(i) if i != ' ' else None for i in data[9*j:9*j + 9]]
+                for j in range(9)]
+            if not solve_sudoku(board):
+                sys.stderr.write('Solving sudoku failed')
+                sys.exit(1)
+            print_board(board)
+    else:
+        print_board(generate_sudoku(args.GAPS))
+
+if __name__ == '__main__':
+	main()
