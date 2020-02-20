@@ -39,7 +39,7 @@ def solve_sudoku(board, pos = (0, 0)):
         # Try to fill the other gaps
         if solve_sudoku(board, find_empty_cell(board, (x, y))): return True
         # Remove values which do not lead to a solution
-        values.pop(0)
+        values.remove(board[x][y])
     board[x][y] = None
     return False
 
