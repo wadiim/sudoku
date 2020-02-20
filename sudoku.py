@@ -57,3 +57,7 @@ def generate_sudoku(gaps = 22):
         board[x][y] = None
         gaps -= 1
     return board
+
+def print_board(board):
+    print('\n'.join([''.join([str(i) if i else ' ' for i in row])
+        for row in board]))
