@@ -4,35 +4,41 @@ import sys, random, argparse
 
 if sys.version[0] == '2': input = raw_input
 
+BOARD_SIZE = 81
+BOARD_WIDTH = 9
+BOX_WIDTH = 3
+DEFAULT_RANDOM_INTERVAL = (32, 64)
+
 def is_valid(num, pos, board):
     x, y = pos
     # Check horizontally and vertically
-    for i in range(9):
+    for i in range(BOARD_WIDTH):
         if board[x][i] == num: return False
         if board[i][y] == num: return False
     # Find top-left corner of the box containing pos
-    dx, dy = x // 3, y // 3
+    dx, dy = x // BOX_WIDTH, y // BOX_WIDTH
     # Check box containing pos
-    for i in range(3*dx, 3*dx + 3):
-        for j in range(3*dy, 3*dy + 3):
+    for i in range(BOX_WIDTH*dx, BOX_WIDTH*dx + BOX_WIDTH):
+        for j in range(BOX_WIDTH*dy, BOX_WIDTH*dy + BOX_WIDTH):
             if board[i][j] == num: return False
     return True
 
 def next_position(board, x, y):
-    return (x + 1, y) if x + 1 < 9 else (0, y + 1)
+    return (x + 1, y) if x + 1 < BOARD_WIDTH else (0, y + 1)
 
 def find_empty_cell(board, start_pos = (0, 0)):
     x, y = start_pos
-    while x < 9 and y < 9 and board[x][y] != None:
+    while x < BOARD_WIDTH and y < BOARD_WIDTH and board[x][y] != None:
         x, y = next_position(board, x, y)
     return x, y
 
 def solve_sudoku(board, pos = (0, 0)):
     x, y = find_empty_cell(board, pos)
     # If all gaps have been filled, return True
-    if x >= 9 or y >= 9: return True
+    if x >= BOARD_WIDTH or y >= BOARD_WIDTH: return True
     # Find all valid values
-    values = [v for v in range(1, 10) if is_valid(v, (x, y), board)]
+    values = [v for v in range(1, BOARD_WIDTH + 1)
+        if is_valid(v, (x, y), board)]
     while len(values) > 0:
         # Put them in the cell randomly
         board[x][y] = random.choice(values)
@@ -44,12 +50,12 @@ def solve_sudoku(board, pos = (0, 0)):
     return False
 
 def generate_sudoku(gaps):
-    board = [[None for i in range(9)] for j in range(9)]
+    board = [[None for i in range(BOARD_WIDTH)] for j in range(BOARD_WIDTH)]
     solve_sudoku(board)
     while gaps:
         # Find random position
-        x = random.randint(0, 8)
-        y = random.randint(0, 8)
+        x = random.randint(0, BOARD_WIDTH - 1)
+        y = random.randint(0, BOARD_WIDTH - 1)
         # If the value at that position has already been deleted,
         # find another one
         if board[x][y] == None: continue
@@ -69,7 +75,7 @@ def parse_args():
         help = 'solve sudoku')
     group.add_argument('-g', '--generate', type = int, dest = 'GAPS',
         help = 'generate sudoku with GAPS gaps',
-        default = random.randint(32, 64))
+        default = random.randint(*DEFAULT_RANDOM_INTERVAL))
     return parser.parse_args()
 
 def main():
@@ -79,11 +85,12 @@ def main():
         try:
             while True: data += input()
         except EOFError:
-            if len(data) != 81:
+            if len(data) != BOARD_SIZE:
                 sys.stderr.write('Incorrect input')
                 sys.exit(2)
-            board = [[int(i) if i != ' ' else None for i in data[9*j:9*j + 9]]
-                for j in range(9)]
+            board = [[int(i) if i != ' ' else None
+                for i in data[BOARD_WIDTH*j:BOARD_WIDTH*j + BOARD_WIDTH]]
+                for j in range(BOARD_WIDTH)]
             if not solve_sudoku(board):
                 sys.stderr.write('Solving sudoku failed')
                 sys.exit(1)
