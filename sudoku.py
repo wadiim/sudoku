@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys
+import sys, random
 
 if sys.version[0] == '2': input = raw_input
 
@@ -34,11 +34,26 @@ def solve_sudoku(board, pos = (0, 0)):
     # Find all valid values
     values = [v for v in range(1, 10) if is_valid(v, (x, y), board)]
     while len(values) > 0:
-        # Put them in the cell one by one
-        board[x][y] = values[0]
+        # Put them in the cell randomly
+        board[x][y] = random.choice(values)
         # Try to fill the other gaps
         if solve_sudoku(board, find_empty_cell(board, (x, y))): return True
         # Remove values which do not lead to a solution
         values.pop(0)
     board[x][y] = None
     return False
+
+def generate_sudoku(gaps = 22):
+    board = [[None for i in range(9)] for j in range(9)]
+    solve_sudoku(board)
+    while gaps:
+        # Find random position
+        x = random.randint(0, 8)
+        y = random.randint(0, 8)
+        # If the value at that position has already been deleted,
+        # find another one
+        if board[x][y] == None: continue
+        # Otherwise, delete the value
+        board[x][y] = None
+        gaps -= 1
+    return board
