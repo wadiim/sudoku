@@ -43,7 +43,7 @@ def solve_sudoku(board, pos = (0, 0)):
     board[x][y] = None
     return False
 
-def generate_sudoku(gaps = 22):
+def generate_sudoku(gaps):
     board = [[None for i in range(9)] for j in range(9)]
     solve_sudoku(board)
     while gaps:
