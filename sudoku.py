@@ -40,4 +40,5 @@ def solve_sudoku(board, pos = (0, 0)):
         if solve_sudoku(board, find_empty_cell(board, (x, y))): return True
         # Remove values which do not lead to a solution
         values.pop(0)
+    board[x][y] = None
     return False

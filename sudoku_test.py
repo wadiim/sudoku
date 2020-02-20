@@ -78,3 +78,7 @@ class SolveSudokuTest(unittest.TestCase):
         self.board[4][8] = None
         solve_sudoku(self.board)
         self.assertListEqual(self.board, SolveSudokuTest.solution)
+
+    def test_empty_board(self):
+        self.board = [[None for i in range(9)] for j in range(9)]
+        self.assertTrue(solve_sudoku(self.board))
