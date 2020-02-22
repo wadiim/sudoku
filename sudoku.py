@@ -176,9 +176,9 @@ def main():
         try:
             while True: data += input()
         except EOFError:
-            if len(data) != BOARD_SIZE:
-                sys.stderr.write('Incorrect input')
-                sys.exit(2)
+            data_len = len(data)
+            if data_len < BOARD_SIZE: data += ' ' * (BOARD_SIZE - data_len)
+            elif data_len > BOARD_SIZE: data = data[:BOARD_SIZE]
             board = [[int(i) if i != ' ' else None
                 for i in data[BOARD_WIDTH*j:BOARD_WIDTH*j + BOARD_WIDTH]]
                 for j in range(BOARD_WIDTH)]
