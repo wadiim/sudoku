@@ -166,7 +166,7 @@ def parse_args():
         help = 'generate sudoku with GAPS gaps',
         default = random.randint(*DEFAULT_RANDOM_INTERVAL))
     parser.add_argument("--pretty", help = 'pretty-print the results',
-                        action="store_true")
+        action="store_true")
     return parser.parse_args()
 
 def main():
