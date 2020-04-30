@@ -51,7 +51,9 @@ def solve_sudoku(board, pos = (0, 0)):
     return False
 
 def generate_sudoku(gaps):
+    # Create an empty board
     board = [[None for i in range(BOARD_WIDTH)] for j in range(BOARD_WIDTH)]
+    # Fill board with random values
     solve_sudoku(board)
     while gaps:
         # Find random position
@@ -88,6 +90,7 @@ def pretty_print_board(board):
               '┠───┼───┼───╂───┼───┼───╂───┼───┼───┨', None,
               '┗━━━┷━━━┷━━━┻━━━┷━━━┷━━━┻━━━┷━━━┷━━━┛']
 
+    # Insert rows
     for i in range(9): sudoku[2*i+1] = create_board_row(board[i])
     print('\n'.join(sudoku))
 
