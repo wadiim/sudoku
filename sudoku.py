@@ -24,13 +24,13 @@ def is_valid(num, pos, board):
             if board[i][j] == num: return False
     return True
 
-def next_position(board, x, y):
+def find_next_position(board, x, y):
     return (x + 1, y) if x + 1 < BOARD_WIDTH else (0, y + 1)
 
 def find_empty_cell(board, start_pos = (0, 0)):
     x, y = start_pos
     while x < BOARD_WIDTH and y < BOARD_WIDTH and board[x][y] != None:
-        x, y = next_position(board, x, y)
+        x, y = find_next_position(board, x, y)
     return x, y
 
 def solve_sudoku(board, pos = (0, 0)):

@@ -1,4 +1,4 @@
-from sudoku import is_valid, next_position, find_empty_cell, solve_sudoku
+from sudoku import is_valid, find_next_position, find_empty_cell, solve_sudoku
 import unittest, copy
 
 class IsValidTest(unittest.TestCase):
@@ -31,10 +31,10 @@ class NextPositionTest(unittest.TestCase):
         self.board = [[None for i in range(9)] for j in range(9)]
 
     def test_inner_pos(self):
-        self.assertEqual(next_position(self.board, 2, 2), (3, 2))
+        self.assertEqual(find_next_position(self.board, 2, 2), (3, 2))
 
     def test_outer_pos(self):
-        self.assertEqual(next_position(self.board, 8, 4), (0, 5))
+        self.assertEqual(find_next_position(self.board, 8, 4), (0, 5))
 
 class FindEmptyCellTest(unittest.TestCase):
 
