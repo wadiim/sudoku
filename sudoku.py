@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import sys, random, argparse
 
@@ -8,36 +9,6 @@ BOARD_SIZE = 81
 BOARD_WIDTH = 9
 BOX_WIDTH = 3
 DEFAULT_RANDOM_INTERVAL = (32, 64)
-
-# Box drawing characters
-LIGHT_HORIZONTAL = u"\u2500"
-HEAVY_HORIZONTAL = u"\u2501"
-LIGHT_VERTICAL = u"\u2502"
-HEAVY_VERTICAL = u"\u2503"
-LIGHT_DOWN_AND_RIGHT = u"\u250C"
-HEAVY_DOWN_AND_RIGHT = u"\u250F"
-LIGHT_DOWN_AND_LEFT = u"\u2510"
-HEAVY_DOWN_AND_LEFT = u"\u2513"
-LIGHT_UP_AND_RIGHT = u"\u2514"
-HEAVY_UP_AND_RIGHT = u"\u2517"
-LIGHT_UP_AND_LEFT = u"\u2518"
-HEAVY_UP_AND_LEFT = u"\u251B"
-LIGHT_VERTICAL_AND_RIGHT = u"\u251C"
-VERTICAL_HEAVY_AND_RIGHT_LIGHT = u"\u2520"
-HEAVY_VERTICAL_AND_RIGHT = u"\u2523"
-LIGHT_VERTICAL_AND_LEFT = u"\u2524"
-VERTICAL_HEAVY_AND_LEFT_LIGHT = u"\u2528"
-HEAVY_VERTICAL_AND_LEFT = u"\u252B"
-LIGHT_DOWN_AND_HORIZONTAL = u"\u252C"
-DOWN_LIGHT_AND_HORIZONTAL_HEAVY = u"\u252F"
-HEAVY_DOWN_AND_HORIZONTAL = u"\u2533"
-LIGHT_UP_AND_HORIZONTAL = u"\u2534"
-UP_LIGHT_AND_HORIZONTAL_HEAVY = u"\u2537"
-HEAVY_UP_AND_HORIZONTAL = u"\u253B"
-LIGHT_VERTICAL_AND_HORIZONTAL = u"\u253C"
-VERTICAL_LIGHT_AND_HORIZONTAL_HEAVY = u"\u253F"
-VERTICAL_HEAVY_AND_HORIZONTAL_LIGHT = u"\u2542"
-HEAVY_VERTICAL_AND_HORIZONTAL = u"\u254B"
 
 def is_valid(num, pos, board):
     x, y = pos
@@ -99,63 +70,26 @@ def print_board(board):
         for row in board]))
 
 def create_board_row(row_values):
-    return HEAVY_VERTICAL + HEAVY_VERTICAL.join(LIGHT_VERTICAL.join(
+    return '┃' + '┃'.join('│'.join(
         ' {} '.format(row_values[i + j*BOX_WIDTH]
         if row_values[i + j*BOX_WIDTH] else ' ')
         for i in range(BOX_WIDTH))
-        for j in range(BOX_WIDTH)) + HEAVY_VERTICAL
-
-def create_board_line(left_outer_intersection,
-                      major_intersection,
-                      minor_intersection,
-                      horizontal,
-                      right_outer_intersection):
-    return left_outer_intersection + major_intersection.join(
-        minor_intersection.join([BOX_WIDTH*horizontal
-        for i in range(BOX_WIDTH)])
-        for j in range(BOX_WIDTH)) + right_outer_intersection
-
-def create_top_border():
-    return create_board_line(HEAVY_DOWN_AND_RIGHT,
-                             HEAVY_DOWN_AND_HORIZONTAL,
-                             DOWN_LIGHT_AND_HORIZONTAL_HEAVY,
-                             HEAVY_HORIZONTAL,
-                             HEAVY_DOWN_AND_LEFT)
-
-def create_bottom_border():
-    return create_board_line(HEAVY_UP_AND_RIGHT,
-                             HEAVY_UP_AND_HORIZONTAL,
-                             UP_LIGHT_AND_HORIZONTAL_HEAVY,
-                             HEAVY_HORIZONTAL,
-                             HEAVY_UP_AND_LEFT)
-
-def create_light_inner_border():
-    return create_board_line(VERTICAL_HEAVY_AND_RIGHT_LIGHT,
-                             VERTICAL_HEAVY_AND_HORIZONTAL_LIGHT,
-                             LIGHT_VERTICAL_AND_HORIZONTAL,
-                             LIGHT_HORIZONTAL,
-                             VERTICAL_HEAVY_AND_LEFT_LIGHT)
-
-def create_heavy_inner_border():
-    return create_board_line(HEAVY_VERTICAL_AND_RIGHT,
-                             HEAVY_VERTICAL_AND_HORIZONTAL,
-                             VERTICAL_LIGHT_AND_HORIZONTAL_HEAVY,
-                             HEAVY_HORIZONTAL,
-                             HEAVY_VERTICAL_AND_LEFT)
+        for j in range(BOX_WIDTH)) + '┃'
 
 def pretty_print_board(board):
-    print(create_top_border())
-    for i in range(2):
-        for j in range(2):
-            print(create_board_row(board[i*BOX_WIDTH + j]))
-            print(create_light_inner_border())
-        print(create_board_row(board[i*BOX_WIDTH + 2]))
-        print(create_heavy_inner_border())
-    for i in range(6, 8):
-        print(create_board_row(board[i]))
-        print(create_light_inner_border())
-    print(create_board_row(board[-1]))
-    print(create_bottom_border())
+    sudoku = ['┏━━━┯━━━┯━━━┳━━━┯━━━┯━━━┳━━━┯━━━┯━━━┓', None,
+              '┠───┼───┼───╂───┼───┼───╂───┼───┼───┨', None,
+              '┠───┼───┼───╂───┼───┼───╂───┼───┼───┨', None,
+              '┣━━━┿━━━┿━━━╋━━━┿━━━┿━━━╋━━━┿━━━┿━━━┫', None,
+              '┠───┼───┼───╂───┼───┼───╂───┼───┼───┨', None,
+              '┠───┼───┼───╂───┼───┼───╂───┼───┼───┨', None,
+              '┣━━━┿━━━┿━━━╋━━━┿━━━┿━━━╋━━━┿━━━┿━━━┫', None,
+              '┠───┼───┼───╂───┼───┼───╂───┼───┼───┨', None,
+              '┠───┼───┼───╂───┼───┼───╂───┼───┼───┨', None,
+              '┗━━━┷━━━┷━━━┻━━━┷━━━┷━━━┻━━━┷━━━┷━━━┛']
+
+    for i in range(9): sudoku[2*i+1] = create_board_row(board[i])
+    print('\n'.join(sudoku))
 
 def parse_args():
     parser = argparse.ArgumentParser()
