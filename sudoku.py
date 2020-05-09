@@ -67,18 +67,18 @@ def generate_sudoku(gaps):
         gaps -= 1
     return board
 
-def print_board(board):
-    print('\n'.join([''.join([str(i) if i else ' ' for i in row])
+def board_to_str(board):
+    return ('\n'.join([''.join([str(i) if i else ' ' for i in row])
         for row in board]))
 
-def create_board_row(row_values):
+def row_to_pretty_str(row_values):
     return '┃' + '┃'.join('│'.join(
         ' {} '.format(row_values[i + j*BOX_WIDTH]
         if row_values[i + j*BOX_WIDTH] else ' ')
         for i in range(BOX_WIDTH))
         for j in range(BOX_WIDTH)) + '┃'
 
-def pretty_print_board(board):
+def board_to_pretty_str(board):
     sudoku = ['┏━━━┯━━━┯━━━┳━━━┯━━━┯━━━┳━━━┯━━━┯━━━┓', None,
               '┠───┼───┼───╂───┼───┼───╂───┼───┼───┨', None,
               '┠───┼───┼───╂───┼───┼───╂───┼───┼───┨', None,
@@ -91,8 +91,8 @@ def pretty_print_board(board):
               '┗━━━┷━━━┷━━━┻━━━┷━━━┷━━━┻━━━┷━━━┷━━━┛']
 
     # Insert rows
-    for i in range(9): sudoku[2*i+1] = create_board_row(board[i])
-    print('\n'.join(sudoku))
+    for i in range(9): sudoku[2*i+1] = row_to_pretty_str(board[i])
+    return '\n'.join(sudoku)
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -122,11 +122,13 @@ def main():
             if not solve_sudoku(board):
                 sys.stderr.write('Solving sudoku failed')
                 sys.exit(1)
-            if args.pretty: pretty_print_board(board)
-            else: print_board(board)
+            if args.pretty: print(board_to_pretty_str(board))
+            else: print(board_to_str(board))
     else:
-        if args.pretty: pretty_print_board(generate_sudoku(args.GAPS))
-        else: print_board(generate_sudoku(args.GAPS))
+        if args.pretty:
+            print(board_to_pretty_str(generate_sudoku(args.GAPS)))
+        else:
+            print(board_to_str(generate_sudoku(args.GAPS)))
 
 if __name__ == '__main__':
 	main()
