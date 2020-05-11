@@ -1,4 +1,6 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 from sudoku import (is_valid, find_next_position, find_empty_cell,
     solve_sudoku, board_to_str, row_to_pretty_str, board_to_pretty_str)
 import unittest, copy
@@ -139,3 +141,6 @@ class BoardToPrettyStrTest(unittest.TestCase):
                     '┃ 2 │ 3 │ 9 ┃ 8 │ 4 │ 1 ┃ 5 │ 6 │   ┃\n'
                     '┗━━━┷━━━┷━━━┻━━━┷━━━┷━━━┻━━━┷━━━┷━━━┛')
         self.assertEqual(board_to_pretty_str(board), solution)
+
+if __name__ == '__main__':
+    unittest.main()
