@@ -1,4 +1,6 @@
-from sudoku import is_valid, find_next_position, find_empty_cell, solve_sudoku
+# -*- coding: utf-8 -*-
+from sudoku import (is_valid, find_next_position, find_empty_cell,
+    solve_sudoku, board_to_str, row_to_pretty_str, board_to_pretty_str)
 import unittest, copy
 
 class IsValidTest(unittest.TestCase):
@@ -82,3 +84,58 @@ class SolveSudokuTest(unittest.TestCase):
     def test_empty_board(self):
         self.board = [[None for i in range(9)] for j in range(9)]
         self.assertTrue(solve_sudoku(self.board))
+
+class BoardToStrTest(unittest.TestCase):
+
+    def test_empty_board(self):
+        self.empty = [[None for i in range(9)] for j in range(9)]
+        self.assertEqual(board_to_str(self.empty), (' '*9 + '\n')*8 + ' '*9)
+
+    def test_nonempty_board(self):
+        self.board = [[2 for i in range(9)] for j in range(9)]
+        self.assertEqual(board_to_str(self.board), ('2'*9 + '\n')*8 + '2'*9)
+
+class RowToPrettyStrTest(unittest.TestCase):
+
+    def test_empty_row(self):
+        self.empty = [None for i in range(9)]
+        self.assertEqual(row_to_pretty_str(self.empty),
+            '┃   │   │   ┃   │   │   ┃   │   │   ┃')
+
+    def test_nonempty_row(self):
+        self.row = [2 for i in range(9)]
+        self.assertEqual(row_to_pretty_str(self.row),
+            '┃ 2 │ 2 │ 2 ┃ 2 │ 2 │ 2 ┃ 2 │ 2 │ 2 ┃')
+
+class BoardToPrettyStrTest(unittest.TestCase):
+
+    def test_conversion(self):
+        board = [[8, 2, 7, 1, 5, None, 3, 9, 6],
+                 [9, None, 5, 3, 2, 7, 1, 4, 8],
+                 [3, 4, 1, 6, 8, 9, 7, 5, None],
+                 [None, 9, 3, 4, 6, 8, 2, 7, 1],
+                 [4, 7, 2, 5, 1, 3, None, 8, 9],
+                 [6, 1, 8, 9, 7, 2, 4, None, 5],
+                 [7, 8, 6, 2, None, 5, 9, 1, 4],
+                 [1, 5, None, 7, 9, 6, 8, 2, 3],
+                 [2, 3, 9, 8, 4, 1, 5, 6, None]]
+        solution = ('┏━━━┯━━━┯━━━┳━━━┯━━━┯━━━┳━━━┯━━━┯━━━┓\n'
+                    '┃ 8 │ 2 │ 7 ┃ 1 │ 5 │   ┃ 3 │ 9 │ 6 ┃\n'
+                    '┠───┼───┼───╂───┼───┼───╂───┼───┼───┨\n'
+                    '┃ 9 │   │ 5 ┃ 3 │ 2 │ 7 ┃ 1 │ 4 │ 8 ┃\n'
+                    '┠───┼───┼───╂───┼───┼───╂───┼───┼───┨\n'
+                    '┃ 3 │ 4 │ 1 ┃ 6 │ 8 │ 9 ┃ 7 │ 5 │   ┃\n'
+                    '┣━━━┿━━━┿━━━╋━━━┿━━━┿━━━╋━━━┿━━━┿━━━┫\n'
+                    '┃   │ 9 │ 3 ┃ 4 │ 6 │ 8 ┃ 2 │ 7 │ 1 ┃\n'
+                    '┠───┼───┼───╂───┼───┼───╂───┼───┼───┨\n'
+                    '┃ 4 │ 7 │ 2 ┃ 5 │ 1 │ 3 ┃   │ 8 │ 9 ┃\n'
+                    '┠───┼───┼───╂───┼───┼───╂───┼───┼───┨\n'
+                    '┃ 6 │ 1 │ 8 ┃ 9 │ 7 │ 2 ┃ 4 │   │ 5 ┃\n'
+                    '┣━━━┿━━━┿━━━╋━━━┿━━━┿━━━╋━━━┿━━━┿━━━┫\n'
+                    '┃ 7 │ 8 │ 6 ┃ 2 │   │ 5 ┃ 9 │ 1 │ 4 ┃\n'
+                    '┠───┼───┼───╂───┼───┼───╂───┼───┼───┨\n'
+                    '┃ 1 │ 5 │   ┃ 7 │ 9 │ 6 ┃ 8 │ 2 │ 3 ┃\n'
+                    '┠───┼───┼───╂───┼───┼───╂───┼───┼───┨\n'
+                    '┃ 2 │ 3 │ 9 ┃ 8 │ 4 │ 1 ┃ 5 │ 6 │   ┃\n'
+                    '┗━━━┷━━━┷━━━┻━━━┷━━━┷━━━┻━━━┷━━━┷━━━┛')
+        self.assertEqual(board_to_pretty_str(board), solution)
