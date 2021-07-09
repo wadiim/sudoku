@@ -2,7 +2,9 @@
 
 A sudoku solver and generator.
 
-![](https://user-images.githubusercontent.com/33803413/74972761-9b56ce00-5422-11ea-94e4-04d945af2b71.png)
+<p align="center">
+   <img src="https://user-images.githubusercontent.com/33803413/125097233-34e55500-e0d6-11eb-9428-ca2d174bc239.png" />
+</p>
 
 ## Usage
 
